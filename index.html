@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Writing with Clarity: Modifiers</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* Slide Transition System */
+        .slide-wrapper {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            padding: 4rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide.active {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            z-index: 10;
+        }
+
+        .slide.previous {
+            visibility: visible;
+            opacity: 0;
+            transform: translateY(-20px) scale(1.02);
+            z-index: 5;
+        }
+
+        /* Staggered Content Animation */
+        .slide.active .animate-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.6s forwards;
+        }
+
+        .slide.active .delay-1 { animation-delay: 0.2s; }
+        .slide.active .delay-2 { animation-delay: 0.4s; }
+        .slide.active .delay-3 { animation-delay: 0.6s; }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .title-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.1);
+            transition: all 0.2s;
+            backdrop-filter: blur(5px);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 100;
+        }
+
+        .quiz-option {
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .quiz-option:hover {
+            background: rgba(59, 130, 246, 0.2);
+            border-color: #3b82f6;
+        }
+        
+        .correct { border-color: #22c55e !important; background: rgba(34, 197, 94, 0.1) !important; }
+        .wrong { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; }
+    </style>
+</head>
+<body>
+
+    <div id="slide-container" class="slide-wrapper">
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide active" id="slide-0">
+            <h1 class="text-7xl font-extrabold title-font mb-4 text-center animate-in">Writing with <span class="gradient-text">Clarity</span></h1>
+            <p class="text-2xl text-slate-400 tracking-widest uppercase font-light animate-in delay-1">Finding and Fixing Modifier Mistakes</p>
+            <div class="mt-12 text-slate-500 italic font-medium animate-in delay-2">Wafi Syed</div>
+        </div>
+
+        <!-- SLIDE 2: THE BASICS -->
+        <div class="slide" id="slide-1">
+            <h2 class="text-4xl font-bold mb-12 border-b-2 border-blue-500 pb-2 animate-in">The Golden Rule of Modifiers</h2>
+            <div class="card p-12 max-w-4xl w-full text-center animate-in delay-1">
+                <p class="text-4xl italic mb-8">"Covered in hot fudge, <span class="text-blue-400">my husband</span> ate the sundae."</p>
+                <div class="flex justify-center gap-12 mt-8">
+                    <div class="text-slate-400">
+                        <p class="text-xs uppercase tracking-widest mb-2">What we meant</p>
+                        <p>The sundae has the fudge.</p>
+                    </div>
+                    <div class="text-red-400 font-bold">
+                        <p class="text-xs uppercase tracking-widest mb-2 text-slate-400 font-normal">What we actually said</p>
+                        <p>The husband is covered in fudge.</p>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-slate-400 animate-in delay-2">A <strong>modifier</strong> (a descriptive phrase) must be placed right next to the word it describes.</p>
+        </div>
+
+        <!-- SLIDE 3: TWO COMMON MISTAKES -->
+        <div class="slide" id="slide-2">
+            <h2 class="text-4xl font-bold mb-12 animate-in">Two Common Mistakes</h2>
+            <div class="grid grid-cols-2 gap-8 w-full max-w-6xl animate-in delay-1">
+                <div class="card p-8 border-l-4 border-l-blue-500">
+                    <h3 class="text-2xl font-bold mb-4 text-blue-400 uppercase">01. Misplaced Modifiers</h3>
+                    <p class="text-lg leading-relaxed text-slate-300">The description is in the <strong>wrong spot</strong>. It's too far from the right word, so it looks like it's describing the wrong thing.</p>
+                    <div class="mt-4 p-4 bg-slate-900 rounded-lg font-mono text-sm border border-blue-900">
+                        The Fix: Move the phrase closer.
+                    </div>
+                </div>
+                <div class="card p-8 border-l-4 border-l-purple-500">
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400 uppercase">02. Dangling Modifiers</h3>
+                    <p class="text-lg leading-relaxed text-slate-300">The word being described is <strong>missing</strong> from the sentence entirely. The description is just "dangling" there with no subject.</p>
+                    <div class="mt-4 p-4 bg-slate-900 rounded-lg font-mono text-sm border border-purple-900">
+                        The Fix: Rewrite to add the subject.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: WHY IT MATTERS -->
+        <div class="slide" id="slide-3">
+            <h2 class="text-4xl font-bold mb-8 animate-in">Why Does This Matter?</h2>
+            <ul class="space-y-6 text-2xl max-w-2xl">
+                <li class="flex items-start gap-4 animate-in delay-1">
+                    <span class="text-blue-500">✔</span>
+                    <span><strong>Better Grades:</strong> Teachers won't get confused by your sentences.</span>
+                </li>
+                <li class="flex items-start gap-4 animate-in delay-2">
+                    <span class="text-blue-500">✔</span>
+                    <span><strong>Professionalism:</strong> Clear writing makes you look more responsible and smart.</span>
+                </li>
+                <li class="flex items-start gap-4 animate-in delay-3">
+                    <span class="text-blue-500">✔</span>
+                    <span><strong>Test Prep:</strong> These are common questions on the SAT and PSAT.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- SLIDE 5: CLASS PRACTICE -->
+        <div class="slide" id="slide-4">
+            <h2 class="text-3xl font-bold mb-8 uppercase tracking-widest text-slate-400 underline decoration-blue-500 underline-offset-8 animate-in">Class Practice: Finding the Subject</h2>
+            <div class="card p-8 text-center max-w-3xl animate-in delay-1">
+                <p class="text-4xl mb-6 font-light">"Screaming and crying, <span class="underline decoration-red-500">the mother</span> calmed the baby."</p>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-xl">
+                        <p class="font-bold text-red-400 uppercase text-xs mb-2">What it sounds like</p>
+                        <p class="text-sm italic">The mother is the one screaming and crying while trying to be helpful.</p>
+                    </div>
+                    <div class="p-6 bg-green-900/10 border border-green-500/20 rounded-xl">
+                        <p class="font-bold text-green-400 uppercase text-xs mb-2">How to fix it</p>
+                        <p class="text-sm italic">"The mother calmed the baby who was screaming and crying."</p>
+                    </div>
+                </div>
+            </div>
+            <p class="mt-8 text-slate-400 font-medium animate-in delay-2">Task: Who is really doing the action?</p>
+        </div>
+
+        <!-- SLIDE 6: QUICK QUIZ -->
+        <div class="slide" id="slide-5">
+            <h2 class="text-5xl font-bold mb-4 animate-in">Quick Quiz</h2>
+            <p class="text-xl text-slate-400 mb-12 uppercase tracking-widest animate-in delay-1">Modifier Detective Test</p>
+            <button onclick="nextSlide()" class="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-blue-500/20 animate-in delay-2">
+                Start the Quiz
+            </button>
+        </div>
+
+        <!-- SLIDE 7: QUIZ Q1 -->
+        <div class="slide" id="slide-6">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 1</p>
+                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">Which sentence makes the most sense?</h3>
+                <div class="space-y-4 animate-in delay-2">
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Mistake: This says the trailer has eyes and is looking out the window.')">
+                        A. I saw a huge trailer looking out the window.
+                    </div>
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! I am the one looking out the window.')">
+                        B. Looking out the window, I saw a huge trailer.
+                    </div>
+                </div>
+                <div id="feedback-6" class="mt-6 text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: QUIZ Q2 -->
+        <div class="slide" id="slide-7">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 2</p>
+                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
+                <div class="space-y-4 animate-in delay-2">
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the camper.')">
+                        A. It's misplaced: It sounds like the bear went camping.
+                    </div>
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Not quite. The grammar makes the bear the one doing the camping!')">
+                        B. There is nothing wrong with it.
+                    </div>
+                </div>
+                <div id="feedback-7" class="mt-6 text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: QUIZ Q3 -->
+        <div class="slide" id="slide-8">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 3</p>
+                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
+                <div class="space-y-4 animate-in delay-2">
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the person is missing!')">
+                        A. Just move the description to the end.
+                    </div>
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! You have to add the person or thing you are describing.')">
+                        B. Add the subject that was missing.
+                    </div>
+                </div>
+                <div id="feedback-8" class="mt-6 text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: WRAP UP -->
+        <div class="slide" id="slide-9">
+            <h2 class="text-6xl font-bold mb-8 text-blue-400 animate-in">Wrapping Up</h2>
+            <div class="card p-12 text-left max-w-2xl border-l-8 border-blue-500 animate-in delay-1">
+                <h4 class="text-xl font-bold mb-4 text-slate-100 uppercase tracking-tight">Remember these tips:</h4>
+                <ul class="space-y-4 text-slate-300">
+                    <li class="flex gap-2"><span>•</span> <span><strong>Keep it close:</strong> Put descriptions right next to what they describe.</span></li>
+                    <li class="flex gap-2"><span>•</span> <span><strong>Don't dangle:</strong> Make sure the subject is actually in the sentence.</span></li>
+                    <li class="flex gap-2"><span>•</span> <span><strong>Read it literally:</strong> If the sentence sounds funny or impossible, fix it!</span></li>
+                </ul>
+            </div>
+            <p class="mt-12 text-slate-500 font-medium uppercase tracking-widest text-xs animate-in delay-2">Thanks for listening! Any questions?</p>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="fixed bottom-10 right-10 flex gap-4 z-[101]">
+        <button onclick="prevSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center border border-white/10" aria-label="Previous Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button onclick="nextSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <div id="progress" class="progress-bar" style="width: 0%"></div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function updateSlide(direction) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'previous');
+                if (i === currentSlide) {
+                    s.classList.add('active');
+                } else if (i === currentSlide - 1 && direction === 'next') {
+                    s.classList.add('previous');
+                } else if (i === currentSlide + 1 && direction === 'prev') {
+                    s.classList.add('previous');
+                }
+            });
+
+            const progress = (currentSlide / (totalSlides - 1)) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide('next');
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide('prev');
+            }
+        }
+
+        function checkAnswer(el, isCorrect, feedback) {
+            const feedbackEl = document.getElementById(`feedback-${currentSlide}`);
+            feedbackEl.innerText = feedback;
+            feedbackEl.classList.remove('hidden');
+            
+            const currentSlideEl = document.getElementById(`slide-${currentSlide}`);
+            currentSlideEl.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.classList.remove('correct', 'wrong');
+            });
+
+            if (isCorrect) {
+                el.classList.add('correct');
+                feedbackEl.style.color = "#22c55e";
+            } else {
+                el.classList.add('wrong');
+                feedbackEl.style.color = "#ef4444";
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Initial update
+        updateSlide();
+    </script>
+</body>
+</html>
