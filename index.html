@@ -13,6 +13,7 @@
             background-color: #0f172a;
             color: #f8fafc;
             overflow: hidden;
+            user-select: none;
         }
 
         /* Slide Transition System */
@@ -90,11 +91,6 @@
             transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(96, 165, 250, 0.4);
-        }
-
         .nav-btn {
             background: rgba(255, 255, 255, 0.1);
             transition: all 0.2s;
@@ -116,6 +112,33 @@
             z-index: 100;
         }
 
+        /* Game Specific Styles */
+        .draggable {
+            cursor: grab;
+            padding: 1rem 1.5rem;
+            background: #3b82f6;
+            border-radius: 0.75rem;
+            font-weight: bold;
+            display: inline-block;
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
+            touch-action: none;
+        }
+        .draggable:active { cursor: grabbing; }
+
+        .drop-zone {
+            display: inline-block;
+            min-width: 150px;
+            height: 60px;
+            border: 2px dashed rgba(255,255,255,0.3);
+            border-radius: 0.75rem;
+            vertical-align: middle;
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        .drop-zone.active { border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
+        .drop-zone.correct { border-style: solid; border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
+        .drop-zone.wrong-drop { border-style: solid; border-color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+
         .quiz-option {
             cursor: pointer;
             transition: all 0.2s;
@@ -129,6 +152,14 @@
         
         .correct { border-color: #22c55e !important; background: rgba(34, 197, 94, 0.1) !important; }
         .wrong { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; }
+
+        #next-lock-msg {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -181,27 +212,8 @@
             </div>
         </div>
 
-        <!-- SLIDE 4: WHY IT MATTERS -->
+        <!-- SLIDE 4: CLASS PRACTICE -->
         <div class="slide" id="slide-3">
-            <h2 class="text-4xl font-bold mb-8 animate-in">Why Does This Matter?</h2>
-            <ul class="space-y-6 text-2xl max-w-2xl">
-                <li class="flex items-start gap-4 animate-in delay-1">
-                    <span class="text-blue-500">✔</span>
-                    <span><strong>Better Grades:</strong> Teachers won't get confused by your sentences.</span>
-                </li>
-                <li class="flex items-start gap-4 animate-in delay-2">
-                    <span class="text-blue-500">✔</span>
-                    <span><strong>Professionalism:</strong> Clear writing makes you look more responsible and smart.</span>
-                </li>
-                <li class="flex items-start gap-4 animate-in delay-3">
-                    <span class="text-blue-500">✔</span>
-                    <span><strong>Test Prep:</strong> These are common questions on the SAT and PSAT.</span>
-                </li>
-            </ul>
-        </div>
-
-        <!-- SLIDE 5: CLASS PRACTICE -->
-        <div class="slide" id="slide-4">
             <h2 class="text-3xl font-bold mb-8 uppercase tracking-widest text-slate-400 underline decoration-blue-500 underline-offset-8 animate-in">Class Practice: Finding the Subject</h2>
             <div class="card p-8 text-center max-w-3xl animate-in delay-1">
                 <p class="text-4xl mb-6 font-light">"Screaming and crying, <span class="underline decoration-red-500">the mother</span> calmed the baby."</p>
@@ -219,9 +231,33 @@
             <p class="mt-8 text-slate-400 font-medium animate-in delay-2">Task: Who is really doing the action?</p>
         </div>
 
+        <!-- SLIDE 5: SENTENCE FIXER GAME -->
+        <div class="slide" id="slide-4">
+            <h2 class="text-4xl font-bold mb-4 animate-in">Sentence Fixer Game</h2>
+            <p class="text-slate-400 mb-12 animate-in delay-1">Drag the modifier so it describes <strong>the person</strong>, not the trailer!</p>
+            
+            <div class="card p-12 w-full max-w-4xl text-center animate-in delay-2">
+                <div class="text-3xl mb-12 flex flex-wrap justify-center items-center gap-4">
+                    <div id="target-zone" class="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    <span>, I saw a huge trailer</span>
+                    <div id="wrong-zone" class="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+                    <span>.</span>
+                </div>
+
+                <div id="mod-container" class="py-8 border-t border-white/10 mt-8">
+                    <div id="mod-tag" class="draggable" draggable="true" ondragstart="drag(event)">
+                        Looking out the window
+                    </div>
+                </div>
+            </div>
+            
+            <div id="game-feedback" class="mt-8 text-2xl font-bold transition-all"></div>
+            <p id="next-lock-msg" class="mt-4 text-sm text-slate-500">Move the phrase to the correct box to unlock.</p>
+        </div>
+
         <!-- SLIDE 6: QUICK QUIZ -->
         <div class="slide" id="slide-5">
-            <h2 class="text-5xl font-bold mb-4 animate-in">Quick Quiz</h2>
+            <h2 class="text-5xl font-bold mb-4 animate-in">Final Check</h2>
             <p class="text-xl text-slate-400 mb-12 uppercase tracking-widest animate-in delay-1">Modifier Detective Test</p>
             <button onclick="nextSlide()" class="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-blue-500/20 animate-in delay-2">
                 Start the Quiz
@@ -232,13 +268,13 @@
         <div class="slide" id="slide-6">
             <div class="max-w-4xl w-full">
                 <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 1</p>
-                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">Which sentence makes the most sense?</h3>
+                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
                 <div class="space-y-4 animate-in delay-2">
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Mistake: This says the trailer has eyes and is looking out the window.')">
-                        A. I saw a huge trailer looking out the window.
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the one camping.')">
+                        A. It's misplaced: It sounds like the bear went camping.
                     </div>
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! I am the one looking out the window.')">
-                        B. Looking out the window, I saw a huge trailer.
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Actually, the bear is the subject here, making it the camper!')">
+                        B. There is nothing wrong with it.
                     </div>
                 </div>
                 <div id="feedback-6" class="mt-6 text-xl font-bold hidden"></div>
@@ -249,38 +285,21 @@
         <div class="slide" id="slide-7">
             <div class="max-w-4xl w-full">
                 <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 2</p>
-                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
+                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
                 <div class="space-y-4 animate-in delay-2">
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the camper.')">
-                        A. It's misplaced: It sounds like the bear went camping.
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the subject is missing!')">
+                        A. Just move the description to the end.
                     </div>
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Not quite. The grammar makes the bear the one doing the camping!')">
-                        B. There is nothing wrong with it.
+                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! You must add the missing word being described.')">
+                        B. Add the subject that was missing.
                     </div>
                 </div>
                 <div id="feedback-7" class="mt-6 text-xl font-bold hidden"></div>
             </div>
         </div>
 
-        <!-- SLIDE 9: QUIZ Q3 -->
+        <!-- SLIDE 9: WRAP UP -->
         <div class="slide" id="slide-8">
-            <div class="max-w-4xl w-full">
-                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 3</p>
-                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
-                <div class="space-y-4 animate-in delay-2">
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the person is missing!')">
-                        A. Just move the description to the end.
-                    </div>
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! You have to add the person or thing you are describing.')">
-                        B. Add the subject that was missing.
-                    </div>
-                </div>
-                <div id="feedback-8" class="mt-6 text-xl font-bold hidden"></div>
-            </div>
-        </div>
-
-        <!-- SLIDE 10: WRAP UP -->
-        <div class="slide" id="slide-9">
             <h2 class="text-6xl font-bold mb-8 text-blue-400 animate-in">Wrapping Up</h2>
             <div class="card p-12 text-left max-w-2xl border-l-8 border-blue-500 animate-in delay-1">
                 <h4 class="text-xl font-bold mb-4 text-slate-100 uppercase tracking-tight">Remember these tips:</h4>
@@ -299,7 +318,7 @@
         <button onclick="prevSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center border border-white/10" aria-label="Previous Slide">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <button onclick="nextSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
+        <button id="next-btn" onclick="nextSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
     </div>
@@ -308,10 +327,24 @@
 
     <script>
         let currentSlide = 0;
+        let gameSolved = false;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
 
         function updateSlide(direction) {
+            const nextBtn = document.getElementById('next-btn');
+            const lockMsg = document.getElementById('next-lock-msg');
+            
+            if (currentSlide === 4 && !gameSolved) {
+                nextBtn.style.opacity = "0.3";
+                nextBtn.style.pointerEvents = "none";
+                if (lockMsg) lockMsg.classList.remove('hidden');
+            } else {
+                nextBtn.style.opacity = "1";
+                nextBtn.style.pointerEvents = "auto";
+                if (lockMsg) lockMsg.classList.add('hidden');
+            }
+
             slides.forEach((s, i) => {
                 s.classList.remove('active', 'previous');
                 if (i === currentSlide) {
@@ -341,6 +374,50 @@
             }
         }
 
+        function allowDrop(ev) {
+            ev.preventDefault();
+            ev.currentTarget.classList.add('active');
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            const target = ev.currentTarget;
+            const feedback = document.getElementById('game-feedback');
+            
+            target.classList.remove('active');
+            
+            if (target.id === "target-zone") {
+                target.appendChild(draggedElement);
+                target.className = "drop-zone correct";
+                target.style.border = "none";
+                gameSolved = true;
+                feedback.innerText = "✨ Success! You are the one looking, not the truck.";
+                feedback.className = "mt-8 text-2xl font-bold text-green-400 block";
+                if (document.getElementById('next-lock-msg')) {
+                    document.getElementById('next-lock-msg').classList.add('hidden');
+                }
+                updateSlide();
+            } else if (target.id === "wrong-zone") {
+                target.appendChild(draggedElement);
+                target.className = "drop-zone wrong-drop";
+                feedback.innerText = "🚨 Oops! Now it sounds like the trailer is looking out the window.";
+                feedback.className = "mt-8 text-2xl font-bold text-red-400 block";
+                
+                // Reset after a moment so they can try again
+                setTimeout(() => {
+                    document.getElementById('mod-container').appendChild(draggedElement);
+                    target.className = "drop-zone";
+                    feedback.className = "hidden";
+                }, 2500);
+            }
+        }
+
         function checkAnswer(el, isCorrect, feedback) {
             const feedbackEl = document.getElementById(`feedback-${currentSlide}`);
             feedbackEl.innerText = feedback;
@@ -361,11 +438,13 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                if (currentSlide === 4 && !gameSolved) return;
+                nextSlide();
+            }
             if (e.key === 'ArrowLeft') prevSlide();
         });
 
-        // Initial update
         updateSlide();
     </script>
 </body>
