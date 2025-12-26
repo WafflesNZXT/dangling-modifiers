@@ -14,6 +14,7 @@
             color: #f8fafc;
             overflow: hidden;
             user-select: none;
+            touch-action: manipulation;
         }
 
         /* Slide Transition System */
@@ -30,7 +31,7 @@
             left: 0;
             height: 100%;
             width: 100%;
-            padding: 4rem;
+            padding: 1.5rem; /* Reduced for mobile */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -39,6 +40,11 @@
             opacity: 0;
             transform: translateY(20px) scale(0.98);
             transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto; /* Allow scrolling if content overflows on small screens */
+        }
+
+        @media (min-width: 768px) {
+            .slide { padding: 4rem; }
         }
 
         .slide.active {
@@ -115,25 +121,30 @@
         /* Game Specific Styles */
         .draggable {
             cursor: grab;
-            padding: 1rem 1.5rem;
+            padding: 0.75rem 1.25rem;
             background: #3b82f6;
             border-radius: 0.75rem;
             font-weight: bold;
             display: inline-block;
             box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.5);
-            touch-action: none;
+            touch-action: none; /* Critical for mobile drag */
         }
         .draggable:active { cursor: grabbing; }
 
         .drop-zone {
-            display: inline-block;
-            min-width: 150px;
-            height: 60px;
+            display: inline-flex;
+            min-width: 120px;
+            height: 50px;
             border: 2px dashed rgba(255,255,255,0.3);
             border-radius: 0.75rem;
             vertical-align: middle;
-            margin: 0 10px;
+            margin: 5px 10px;
             transition: all 0.3s;
+            align-items: center;
+            justify-content: center;
+        }
+        @media (min-width: 768px) {
+            .drop-zone { min-width: 150px; height: 60px; }
         }
         .drop-zone.active { border-color: #60a5fa; background: rgba(96, 165, 250, 0.1); }
         .drop-zone.correct { border-style: solid; border-color: #22c55e; background: rgba(34, 197, 94, 0.1); }
@@ -167,45 +178,45 @@
     <div id="slide-container" class="slide-wrapper">
         <!-- SLIDE 1: TITLE -->
         <div class="slide active" id="slide-0">
-            <h1 class="text-7xl font-extrabold title-font mb-4 text-center animate-in">Writing with <span class="gradient-text">Clarity</span></h1>
-            <p class="text-2xl text-slate-400 tracking-widest uppercase font-light animate-in delay-1">Finding and Fixing Modifier Mistakes</p>
-            <div class="mt-12 text-slate-500 italic font-medium animate-in delay-2">Wafi Syed</div>
+            <h1 class="text-4xl md:text-7xl font-extrabold title-font mb-4 text-center animate-in">Writing with <span class="gradient-text">Clarity</span></h1>
+            <p class="text-lg md:text-2xl text-slate-400 tracking-widest uppercase font-light text-center animate-in delay-1">Finding and Fixing Modifier Mistakes</p>
+            <div class="mt-8 md:mt-12 text-slate-500 italic font-medium animate-in delay-2">Wafi Syed</div>
         </div>
 
         <!-- SLIDE 2: THE BASICS -->
         <div class="slide" id="slide-1">
-            <h2 class="text-4xl font-bold mb-12 border-b-2 border-blue-500 pb-2 animate-in">The Golden Rule of Modifiers</h2>
-            <div class="card p-12 max-w-4xl w-full text-center animate-in delay-1">
-                <p class="text-4xl italic mb-8">"Covered in hot fudge, <span class="text-blue-400">my husband</span> ate the sundae."</p>
-                <div class="flex justify-center gap-12 mt-8">
+            <h2 class="text-2xl md:text-4xl font-bold mb-8 md:mb-12 border-b-2 border-blue-500 pb-2 animate-in text-center">The Golden Rule of Modifiers</h2>
+            <div class="card p-6 md:p-12 max-w-4xl w-full text-center animate-in delay-1">
+                <p class="text-xl md:text-4xl italic mb-8">"Covered in hot fudge, <span class="text-blue-400">my husband</span> ate the sundae."</p>
+                <div class="flex flex-col md:flex-row justify-center gap-6 md:gap-12 mt-8">
                     <div class="text-slate-400">
-                        <p class="text-xs uppercase tracking-widest mb-2">What we meant</p>
-                        <p>The sundae has the fudge.</p>
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2">What we meant</p>
+                        <p class="text-sm md:text-base">The sundae has the fudge.</p>
                     </div>
                     <div class="text-red-400 font-bold">
-                        <p class="text-xs uppercase tracking-widest mb-2 text-slate-400 font-normal">What we actually said</p>
-                        <p>The husband is covered in fudge.</p>
+                        <p class="text-[10px] md:text-xs uppercase tracking-widest mb-1 md:mb-2 text-slate-400 font-normal">What we actually said</p>
+                        <p class="text-sm md:text-base">The husband is covered in fudge.</p>
                     </div>
                 </div>
             </div>
-            <p class="mt-8 text-slate-400 animate-in delay-2">A <strong>modifier</strong> (a descriptive phrase) must be placed right next to the word it describes.</p>
+            <p class="mt-8 text-sm md:text-lg text-slate-400 text-center animate-in delay-2">A <strong>modifier</strong> (a descriptive phrase) must be placed right next to the word it describes.</p>
         </div>
 
         <!-- SLIDE 3: TWO COMMON MISTAKES -->
         <div class="slide" id="slide-2">
-            <h2 class="text-4xl font-bold mb-12 animate-in">Two Common Mistakes</h2>
-            <div class="grid grid-cols-2 gap-8 w-full max-w-6xl animate-in delay-1">
-                <div class="card p-8 border-l-4 border-l-blue-500">
-                    <h3 class="text-2xl font-bold mb-4 text-blue-400 uppercase">01. Misplaced Modifiers</h3>
-                    <p class="text-lg leading-relaxed text-slate-300">The description is in the <strong>wrong spot</strong>. It's too far from the right word, so it looks like it's describing the wrong thing.</p>
-                    <div class="mt-4 p-4 bg-slate-900 rounded-lg font-mono text-sm border border-blue-900">
+            <h2 class="text-2xl md:text-4xl font-bold mb-8 md:mb-12 animate-in">Two Common Mistakes</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 w-full max-w-6xl animate-in delay-1">
+                <div class="card p-6 md:p-8 border-l-4 border-l-blue-500">
+                    <h3 class="text-lg md:text-2xl font-bold mb-2 md:mb-4 text-blue-400 uppercase">01. Misplaced Modifiers</h3>
+                    <p class="text-sm md:text-lg leading-relaxed text-slate-300">The description is in the <strong>wrong spot</strong>. It's too far from the right word, so it looks like it's describing the wrong thing.</p>
+                    <div class="mt-4 p-3 md:p-4 bg-slate-900 rounded-lg font-mono text-xs md:text-sm border border-blue-900">
                         The Fix: Move the phrase closer.
                     </div>
                 </div>
-                <div class="card p-8 border-l-4 border-l-purple-500">
-                    <h3 class="text-2xl font-bold mb-4 text-purple-400 uppercase">02. Dangling Modifiers</h3>
-                    <p class="text-lg leading-relaxed text-slate-300">The word being described is <strong>missing</strong> from the sentence entirely. The description is just "dangling" there with no subject.</p>
-                    <div class="mt-4 p-4 bg-slate-900 rounded-lg font-mono text-sm border border-purple-900">
+                <div class="card p-6 md:p-8 border-l-4 border-l-purple-500">
+                    <h3 class="text-lg md:text-2xl font-bold mb-2 md:mb-4 text-purple-400 uppercase">02. Dangling Modifiers</h3>
+                    <p class="text-sm md:text-lg leading-relaxed text-slate-300">The word being described is <strong>missing</strong> from the sentence entirely. The description is just "dangling" there with no subject.</p>
+                    <div class="mt-4 p-3 md:p-4 bg-slate-900 rounded-lg font-mono text-xs md:text-sm border border-purple-900">
                         The Fix: Rewrite to add the subject.
                     </div>
                 </div>
@@ -214,52 +225,52 @@
 
         <!-- SLIDE 4: CLASS PRACTICE -->
         <div class="slide" id="slide-3">
-            <h2 class="text-3xl font-bold mb-8 uppercase tracking-widest text-slate-400 underline decoration-blue-500 underline-offset-8 animate-in">Class Practice: Finding the Subject</h2>
-            <div class="card p-8 text-center max-w-3xl animate-in delay-1">
-                <p class="text-4xl mb-6 font-light">"Screaming and crying, <span class="underline decoration-red-500">the mother</span> calmed the baby."</p>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="p-6 bg-red-900/10 border border-red-500/20 rounded-xl">
-                        <p class="font-bold text-red-400 uppercase text-xs mb-2">What it sounds like</p>
-                        <p class="text-sm italic">The mother is the one screaming and crying while trying to be helpful.</p>
+            <h2 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 uppercase tracking-widest text-slate-400 underline decoration-blue-500 underline-offset-8 animate-in text-center">Class Practice: Finding the Subject</h2>
+            <div class="card p-6 md:p-8 text-center max-w-3xl animate-in delay-1">
+                <p class="text-xl md:text-4xl mb-6 font-light">"Screaming and crying, <span class="underline decoration-red-500">the mother</span> calmed the baby."</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="p-4 md:p-6 bg-red-900/10 border border-red-500/20 rounded-xl">
+                        <p class="font-bold text-red-400 uppercase text-[10px] md:text-xs mb-1 md:mb-2">What it sounds like</p>
+                        <p class="text-xs md:text-sm italic">The mother is the one screaming and crying while trying to be helpful.</p>
                     </div>
-                    <div class="p-6 bg-green-900/10 border border-green-500/20 rounded-xl">
-                        <p class="font-bold text-green-400 uppercase text-xs mb-2">How to fix it</p>
-                        <p class="text-sm italic">"The mother calmed the baby who was screaming and crying."</p>
+                    <div class="p-4 md:p-6 bg-green-900/10 border border-green-500/20 rounded-xl">
+                        <p class="font-bold text-green-400 uppercase text-[10px] md:text-xs mb-1 md:mb-2">How to fix it</p>
+                        <p class="text-xs md:text-sm italic">"The mother calmed the baby who was screaming and crying."</p>
                     </div>
                 </div>
             </div>
-            <p class="mt-8 text-slate-400 font-medium animate-in delay-2">Task: Who is really doing the action?</p>
+            <p class="mt-6 md:mt-8 text-sm md:text-lg text-slate-400 font-medium animate-in delay-2">Task: Who is really doing the action?</p>
         </div>
 
         <!-- SLIDE 5: SENTENCE FIXER GAME -->
         <div class="slide" id="slide-4">
-            <h2 class="text-4xl font-bold mb-4 animate-in">Sentence Fixer Game</h2>
-            <p class="text-slate-400 mb-12 animate-in delay-1">Drag the modifier so it describes <strong>the person</strong>, not the trailer!</p>
+            <h2 class="text-2xl md:text-4xl font-bold mb-2 md:mb-4 animate-in">Sentence Fixer Game</h2>
+            <p class="text-sm md:text-lg text-slate-400 mb-8 md:mb-12 animate-in delay-1 text-center">Drag the modifier so it describes <strong>the person</strong>, not the trailer!</p>
             
-            <div class="card p-12 w-full max-w-4xl text-center animate-in delay-2">
-                <div class="text-3xl mb-12 flex flex-wrap justify-center items-center gap-4">
+            <div class="card p-6 md:p-12 w-full max-w-4xl text-center animate-in delay-2">
+                <div class="text-lg md:text-3xl mb-8 md:mb-12 flex flex-wrap justify-center items-center gap-2 md:gap-4">
                     <div id="target-zone" class="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     <span>, I saw a huge trailer</span>
                     <div id="wrong-zone" class="drop-zone" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
                     <span>.</span>
                 </div>
 
-                <div id="mod-container" class="py-8 border-t border-white/10 mt-8">
+                <div id="mod-container" class="py-4 md:py-8 border-t border-white/10 mt-4 md:mt-8">
                     <div id="mod-tag" class="draggable" draggable="true" ondragstart="drag(event)">
                         Looking out the window
                     </div>
                 </div>
             </div>
             
-            <div id="game-feedback" class="mt-8 text-2xl font-bold transition-all"></div>
-            <p id="next-lock-msg" class="mt-4 text-sm text-slate-500">Move the phrase to the correct box to unlock.</p>
+            <div id="game-feedback" class="mt-6 md:mt-8 text-lg md:text-2xl font-bold transition-all text-center"></div>
+            <p id="next-lock-msg" class="mt-4 text-[10px] md:text-sm text-slate-500 text-center">Move the phrase to the correct box to unlock.</p>
         </div>
 
         <!-- SLIDE 6: QUICK QUIZ -->
         <div class="slide" id="slide-5">
-            <h2 class="text-5xl font-bold mb-4 animate-in">Final Check</h2>
-            <p class="text-xl text-slate-400 mb-12 uppercase tracking-widest animate-in delay-1">Modifier Detective Test</p>
-            <button onclick="nextSlide()" class="bg-blue-600 hover:bg-blue-500 px-8 py-4 rounded-full font-bold transition-all shadow-lg shadow-blue-500/20 animate-in delay-2">
+            <h2 class="text-4xl md:text-5xl font-bold mb-4 animate-in text-center">Final Check</h2>
+            <p class="text-lg md:text-xl text-slate-400 mb-8 md:mb-12 uppercase tracking-widest animate-in delay-1 text-center">Modifier Detective Test</p>
+            <button onclick="nextSlide()" class="bg-blue-600 hover:bg-blue-500 px-6 py-3 md:px-8 md:py-4 rounded-full font-bold transition-all shadow-lg shadow-blue-500/20 animate-in delay-2">
                 Start the Quiz
             </button>
         </div>
@@ -267,59 +278,59 @@
         <!-- SLIDE 7: QUIZ Q1 -->
         <div class="slide" id="slide-6">
             <div class="max-w-4xl w-full">
-                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 1</p>
-                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
-                <div class="space-y-4 animate-in delay-2">
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the one camping.')">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 1</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the one camping.')">
                         A. It's misplaced: It sounds like the bear went camping.
                     </div>
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Actually, the bear is the subject here, making it the camper!')">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'Actually, the bear is the subject here, making it the camper!')">
                         B. There is nothing wrong with it.
                     </div>
                 </div>
-                <div id="feedback-6" class="mt-6 text-xl font-bold hidden"></div>
+                <div id="feedback-6" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
             </div>
         </div>
 
         <!-- SLIDE 8: QUIZ Q2 -->
         <div class="slide" id="slide-7">
             <div class="max-w-4xl w-full">
-                <p class="text-blue-400 font-bold mb-2 text-xs uppercase tracking-widest animate-in">Question 2</p>
-                <h3 class="text-3xl font-bold mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
-                <div class="space-y-4 animate-in delay-2">
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the subject is missing!')">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 2</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the subject is missing!')">
                         A. Just move the description to the end.
                     </div>
-                    <div class="card p-6 quiz-option" onclick="checkAnswer(this, true, 'Correct! You must add the missing word being described.')">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! You must add the missing word being described.')">
                         B. Add the subject that was missing.
                     </div>
                 </div>
-                <div id="feedback-7" class="mt-6 text-xl font-bold hidden"></div>
+                <div id="feedback-7" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
             </div>
         </div>
 
         <!-- SLIDE 9: WRAP UP -->
         <div class="slide" id="slide-8">
-            <h2 class="text-6xl font-bold mb-8 text-blue-400 animate-in">Wrapping Up</h2>
-            <div class="card p-12 text-left max-w-2xl border-l-8 border-blue-500 animate-in delay-1">
-                <h4 class="text-xl font-bold mb-4 text-slate-100 uppercase tracking-tight">Remember these tips:</h4>
-                <ul class="space-y-4 text-slate-300">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 md:mb-8 text-blue-400 animate-in text-center">Wrapping Up</h2>
+            <div class="card p-6 md:p-12 text-left max-w-2xl border-l-8 border-blue-500 animate-in delay-1">
+                <h4 class="text-lg md:text-xl font-bold mb-4 text-slate-100 uppercase tracking-tight">Remember these tips:</h4>
+                <ul class="space-y-3 md:space-y-4 text-sm md:text-lg text-slate-300">
                     <li class="flex gap-2"><span>•</span> <span><strong>Keep it close:</strong> Put descriptions right next to what they describe.</span></li>
                     <li class="flex gap-2"><span>•</span> <span><strong>Don't dangle:</strong> Make sure the subject is actually in the sentence.</span></li>
                     <li class="flex gap-2"><span>•</span> <span><strong>Read it literally:</strong> If the sentence sounds funny or impossible, fix it!</span></li>
                 </ul>
             </div>
-            <p class="mt-12 text-slate-500 font-medium uppercase tracking-widest text-xs animate-in delay-2">Thanks for listening! Any questions?</p>
+            <p class="mt-8 md:mt-12 text-slate-500 font-medium uppercase tracking-widest text-[10px] md:text-xs animate-in delay-2 text-center">Thanks for listening! Any questions?</p>
         </div>
     </div>
 
     <!-- NAVIGATION -->
-    <div class="fixed bottom-10 right-10 flex gap-4 z-[101]">
-        <button onclick="prevSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center border border-white/10" aria-label="Previous Slide">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+    <div class="fixed bottom-6 right-6 md:bottom-10 md:right-10 flex gap-2 md:gap-4 z-[101]">
+        <button onclick="prevSlide()" class="nav-btn p-3 md:p-4 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-white/10" aria-label="Previous Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
         </button>
-        <button id="next-btn" onclick="nextSlide()" class="nav-btn p-4 rounded-full w-14 h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <button id="next-btn" onclick="nextSlide()" class="nav-btn p-3 md:p-4 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
         </button>
     </div>
 
@@ -374,6 +385,12 @@
             }
         }
 
+        // --- Drag/Touch Logic Improved for Mobile ---
+        const modTag = document.getElementById('mod-tag');
+        const targetZone = document.getElementById('target-zone');
+        const wrongZone = document.getElementById('wrong-zone');
+        let active = false, startX, startY;
+
         function allowDrop(ev) {
             ev.preventDefault();
             ev.currentTarget.classList.add('active');
@@ -386,37 +403,89 @@
         function drop(ev) {
             ev.preventDefault();
             const data = ev.dataTransfer.getData("text");
-            const draggedElement = document.getElementById(data);
-            const target = ev.currentTarget;
-            const feedback = document.getElementById('game-feedback');
+            processDrop(ev.currentTarget, data);
+        }
+
+        // Touch Handlers for Mobile
+        function handleTouchStart(e) {
+            if (gameSolved) return;
+            active = true;
+            const touch = e.touches[0];
+            const rect = modTag.getBoundingClientRect();
+            startX = touch.clientX - rect.left;
+            startY = touch.clientY - rect.top;
+            modTag.style.position = 'fixed';
+            modTag.style.zIndex = '1000';
+            modTag.style.width = rect.width + 'px';
+        }
+
+        function handleTouchMove(e) {
+            if (!active) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            modTag.style.left = (touch.clientX - startX) + 'px';
+            modTag.style.top = (touch.clientY - startY) + 'px';
+        }
+
+        function handleTouchEnd(e) {
+            if (!active) return;
+            active = false;
+            const touch = e.changedTouches[0];
+            const dropTarget = document.elementFromPoint(touch.clientX, touch.clientY);
+            const zone = dropTarget?.closest('.drop-zone');
             
+            if (zone) {
+                processDrop(zone, 'mod-tag');
+            } else {
+                resetDraggable();
+            }
+        }
+
+        function processDrop(target, elementId) {
+            const draggedElement = document.getElementById(elementId);
+            const feedback = document.getElementById('game-feedback');
             target.classList.remove('active');
             
             if (target.id === "target-zone") {
                 target.appendChild(draggedElement);
+                draggedElement.style.position = 'static';
+                draggedElement.style.width = 'auto';
                 target.className = "drop-zone correct";
                 target.style.border = "none";
                 gameSolved = true;
                 feedback.innerText = "✨ Success! You are the one looking, not the truck.";
-                feedback.className = "mt-8 text-2xl font-bold text-green-400 block";
+                feedback.className = "mt-6 md:mt-8 text-lg md:text-2xl font-bold text-green-400 block";
                 if (document.getElementById('next-lock-msg')) {
                     document.getElementById('next-lock-msg').classList.add('hidden');
                 }
                 updateSlide();
             } else if (target.id === "wrong-zone") {
                 target.appendChild(draggedElement);
+                draggedElement.style.position = 'static';
+                draggedElement.style.width = 'auto';
                 target.className = "drop-zone wrong-drop";
                 feedback.innerText = "🚨 Oops! Now it sounds like the trailer is looking out the window.";
-                feedback.className = "mt-8 text-2xl font-bold text-red-400 block";
+                feedback.className = "mt-6 md:mt-8 text-lg md:text-2xl font-bold text-red-400 block";
                 
-                // Reset after a moment so they can try again
                 setTimeout(() => {
-                    document.getElementById('mod-container').appendChild(draggedElement);
+                    resetDraggable();
                     target.className = "drop-zone";
                     feedback.className = "hidden";
-                }, 2500);
+                }, 2000);
+            } else {
+                resetDraggable();
             }
         }
+
+        function resetDraggable() {
+            modTag.style.position = 'static';
+            modTag.style.width = 'auto';
+            document.getElementById('mod-container').appendChild(modTag);
+        }
+
+        modTag.addEventListener('touchstart', handleTouchStart, {passive: false});
+        window.addEventListener('touchmove', handleTouchMove, {passive: false});
+        window.addEventListener('touchend', handleTouchEnd);
 
         function checkAnswer(el, isCorrect, feedback) {
             const feedbackEl = document.getElementById(`feedback-${currentSlide}`);
