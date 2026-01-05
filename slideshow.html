@@ -158,6 +158,10 @@
         let gameSolved = false;
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
+        const slideCountEl = document.createElement('div');
+        slideCountEl.id = 'slide-count';
+        slideCountEl.className = 'fixed bottom-6 left-6 md:bottom-10 md:left-10 z-[101] text-xs md:text-sm text-slate-300 bg-white/5 border border-white/10 rounded-full px-3 py-2 backdrop-blur-sm';
+        document.body.appendChild(slideCountEl);
 
         function updateSlide(direction) {
             const nextBtn = document.getElementById('next-btn');
@@ -186,6 +190,11 @@
 
             const progress = (currentSlide / (totalSlides - 1)) * 100;
             document.getElementById('progress').style.width = `${progress}%`;
+
+            // Update slide counter text
+            if (slideCountEl) {
+                slideCountEl.textContent = `Slide ${currentSlide + 1} of ${totalSlides}`;
+            }
         }
 
         function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide('next'); } }
