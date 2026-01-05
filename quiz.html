@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modifier Detective — Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; overflow: hidden; user-select: none; touch-action: manipulation; }
+        .slide-wrapper { position: relative; height: 100vh; width: 100vw; overflow: hidden; }
+        .slide { position: absolute; top: 0; left: 0; height: 100%; width: 100%; padding: 1.5rem; display: flex; flex-direction: column; justify-content: center; align-items: center; visibility: hidden; opacity: 0; transform: translateY(20px) scale(0.98); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); overflow-y: auto; }
+        @media (min-width: 768px) { .slide { padding: 4rem; } }
+        .slide.active { visibility: visible; opacity: 1; transform: translateY(0) scale(1); z-index: 10; }
+        .slide.previous { visibility: visible; opacity: 0; transform: translateY(-20px) scale(1.02); z-index: 5; }
+        .slide.active .animate-in { opacity: 0; transform: translateY(20px); animation: slideInUp 0.6s forwards; }
+        .slide.active .delay-1 { animation-delay: 0.2s; }
+        .slide.active .delay-2 { animation-delay: 0.4s; }
+        .slide.active .delay-3 { animation-delay: 0.6s; }
+        @keyframes slideInUp { to { opacity: 1; transform: translateY(0); } }
+        .card { background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(148, 163, 184, 0.2); backdrop-filter: blur(10px); border-radius: 1.5rem; }
+        .nav-btn { background: rgba(255, 255, 255, 0.1); transition: all 0.2s; backdrop-filter: blur(5px); }
+        .nav-btn:hover { background: rgba(255, 255, 255, 0.2); transform: scale(1.1); }
+        .progress-bar { position: fixed; bottom: 0; left: 0; height: 6px; background: linear-gradient(90deg, #3b82f6, #8b5cf6); transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 100; }
+        .quiz-option { cursor: pointer; transition: all 0.2s; border: 1px solid rgba(255,255,255,0.1); }
+        .quiz-option:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; }
+        .correct { border-color: #22c55e !important; background: rgba(34, 197, 94, 0.1) !important; }
+        .wrong { border-color: #ef4444 !important; background: rgba(239, 68, 68, 0.1) !important; }
+    </style>
+</head>
+<body>
+    <div id="slide-container" class="slide-wrapper">
+        <!-- QUIZ Q1 -->
+        <div class="slide active" id="slide-0">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 1</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">"While camping, the bear ate our food." — Why is this wrong?</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! It makes it sound like the bear was the one camping.')">
+                        A. It's misplaced: It sounds like the bear went camping.
+                    </div>
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'Actually, the bear is the subject here, making it the camper!')">
+                        B. There is nothing wrong with it.
+                    </div>
+                </div>
+                <div id="feedback-0" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- QUIZ Q2 -->
+        <div class="slide" id="slide-1">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 2</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">How do you fix a "Dangling Modifier"?</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'Moving words around doesn\'t help if the subject is missing!')">
+                        A. Just move the description to the end.
+                    </div>
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! You must add the missing word being described.')">
+                        B. Add the subject that was missing.
+                    </div>
+                </div>
+                <div id="feedback-1" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- QUIZ Q3 -->
+        <div class="slide" id="slide-2">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 3</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">"Walking to school, the backpack felt heavy." — What's wrong?</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! It sounds like the backpack was walking — the modifier is misplaced.')">
+                        A. It's misplaced: It sounds like the backpack was walking.
+                    </div>
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'There is a problem — the doer of &quot;walking&quot; isn\'t clear.')">
+                        B. There is nothing wrong with it.
+                    </div>
+                </div>
+                <div id="feedback-2" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- QUIZ Q4 -->
+        <div class="slide" id="slide-3">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 4</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">Choose the best fix: "While reading the book, the doorbell rang."</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Yes! Now the subject of reading (I) is clear.')">
+                        A. While reading the book, I heard the doorbell.
+                    </div>
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'Still implies the doorbell did the reading or stays awkward.')">
+                        B. While reading the book, the doorbell was heard.
+                    </div>
+                </div>
+                <div id="feedback-3" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- QUIZ Q5 -->
+        <div class="slide" id="slide-4">
+            <div class="max-w-4xl w-full">
+                <p class="text-blue-400 font-bold mb-2 text-[10px] md:text-xs uppercase tracking-widest animate-in">Question 5</p>
+                <h3 class="text-xl md:text-3xl font-bold mb-6 md:mb-8 animate-in delay-1">Pick the sentence with a correctly placed modifier.</h3>
+                <div class="space-y-3 md:space-y-4 animate-in delay-2">
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, false, 'This means she almost drove (but didn\'t). Misplaced modifier.')">
+                        A. She nearly drove her kids to school every day.
+                    </div>
+                    <div class="card p-4 md:p-6 quiz-option text-sm md:text-lg" onclick="checkAnswer(this, true, 'Correct! The modifier &quot;nearly&quot; clearly modifies how often, not the action.')">
+                        B. She drove her kids to school nearly every day.
+                    </div>
+                </div>
+                <div id="feedback-4" class="mt-6 text-lg md:text-xl font-bold hidden"></div>
+            </div>
+        </div>
+
+        <!-- DONE -->
+        <div class="slide" id="slide-5">
+            <h2 class="text-4xl md:text-5xl font-bold mb-2 animate-in text-center">Nice Work!</h2>
+            <p class="text-lg md:text-xl text-slate-400 mb-2 uppercase tracking-widest animate-in delay-1 text-center">You finished the quiz.</p>
+            <p id="score-line" class="text-slate-300 mb-6 text-center">Score: 0/5</p>
+            <div class="flex gap-4 justify-center">
+                <a href="index.html" class="bg-slate-700 hover:bg-slate-600 px-6 py-3 rounded-full font-bold">Home</a>
+                <a href="slideshow.html" class="bg-blue-600 hover:bg-blue-500 px-6 py-3 rounded-full font-bold">View Slideshow</a>
+                <button onclick="resetQuiz()" class="bg-emerald-600 hover:bg-emerald-500 px-6 py-3 rounded-full font-bold">Retry Quiz</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="fixed bottom-6 right-6 md:bottom-10 md:right-10 flex gap-2 md:gap-4 z-[101]">
+        <a href="index.html" class="nav-btn p-3 md:p-4 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-white/10" aria-label="Home" title="Home">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+        </a>
+        <button onclick="prevSlide()" class="nav-btn p-3 md:p-4 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center border border-white/10" aria-label="Previous Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        </button>
+        <button id="next-btn" onclick="nextSlide()" class="nav-btn p-3 md:p-4 rounded-full w-12 h-12 md:w-14 md:h-14 flex items-center justify-center bg-blue-600 border border-blue-400" aria-label="Next Slide">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" class="md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        </button>
+    </div>
+
+    <div id="progress" class="progress-bar" style="width: 0%"></div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length; // includes final "done" slide
+        const questionCount = totalSlides - 1; // all slides before the last are questions
+        const answered = new Array(questionCount).fill(false);
+        const selectedCorrect = new Array(questionCount).fill(false);
+
+        function updateSlide(direction) {
+            slides.forEach((s, i) => {
+                s.classList.remove('active', 'previous');
+                if (i === currentSlide) s.classList.add('active');
+                else if (i === currentSlide - 1 && direction === 'next') s.classList.add('previous');
+                else if (i === currentSlide + 1 && direction === 'prev') s.classList.add('previous');
+            });
+            const progress = (currentSlide / (totalSlides - 1)) * 100;
+            document.getElementById('progress').style.width = `${progress}%`;
+            // If on the final slide, show score
+            if (currentSlide === totalSlides - 1) {
+                const score = selectedCorrect.filter(Boolean).length;
+                const scoreEl = document.getElementById('score-line');
+                if (scoreEl) scoreEl.innerText = `Score: ${score}/${questionCount}`;
+            }
+        }
+
+        function nextSlide() { if (currentSlide < totalSlides - 1) { currentSlide++; updateSlide('next'); } }
+        function prevSlide() { if (currentSlide > 0) { currentSlide--; updateSlide('prev'); } }
+
+        function checkAnswer(el, isCorrect, feedback) {
+            // If this question was already answered, ignore further clicks
+            if (currentSlide < questionCount && answered[currentSlide]) {
+                return;
+            }
+
+            // Record the user's current selection for this question
+            if (currentSlide < questionCount) {
+                selectedCorrect[currentSlide] = !!isCorrect;
+                answered[currentSlide] = true;
+            }
+
+            const feedbackEl = document.getElementById(`feedback-${currentSlide}`);
+            if (!feedbackEl) return;
+            feedbackEl.innerText = feedback;
+            feedbackEl.classList.remove('hidden');
+            const currentSlideEl = document.getElementById(`slide-${currentSlide}`);
+            currentSlideEl.querySelectorAll('.quiz-option').forEach(opt => opt.classList.remove('correct', 'wrong'));
+            if (isCorrect) { el.classList.add('correct'); feedbackEl.style.color = '#22c55e'; }
+            else { el.classList.add('wrong'); feedbackEl.style.color = '#ef4444'; }
+
+            // Disable all options on this question after first answer
+            currentSlideEl.querySelectorAll('.quiz-option').forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                opt.style.opacity = '0.9';
+            });
+        }
+
+        function resetQuiz() {
+            // Reset tracking arrays
+            answered.fill(false);
+            selectedCorrect.fill(false);
+
+            // Reset UI for each question slide
+            for (let i = 0; i < questionCount; i++) {
+                const slideEl = document.getElementById(`slide-${i}`);
+                if (!slideEl) continue;
+                const feedbackEl = document.getElementById(`feedback-${i}`);
+                if (feedbackEl) {
+                    feedbackEl.innerText = '';
+                    feedbackEl.classList.add('hidden');
+                }
+                slideEl.querySelectorAll('.quiz-option').forEach(opt => {
+                    opt.classList.remove('correct', 'wrong');
+                    opt.style.pointerEvents = 'auto';
+                    opt.style.opacity = '1';
+                });
+            }
+
+            // Reset score text
+            const scoreEl = document.getElementById('score-line');
+            if (scoreEl) scoreEl.innerText = `Score: 0/${questionCount}`;
+
+            // Jump back to the first question and update progress
+            currentSlide = 0;
+            updateSlide();
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight' || e.key === ' ') nextSlide(); if (e.key === 'ArrowLeft') prevSlide(); });
+        updateSlide();
+    </script>
+</body>
+</html>
